@@ -1,0 +1,114 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity"
+    android:clickable="false">
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="\u2190"
+        android:id="@+id/button"
+        android:layout_marginBottom="52dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="27dp"
+        android:layout_marginStart="27dp" />
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="\u2191"
+        android:id="@+id/button2"
+        android:layout_above="@+id/button"
+        android:layout_toRightOf="@+id/button"
+        android:layout_toEndOf="@+id/button" />
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="\u2192"
+        android:id="@+id/button3"
+        android:layout_below="@+id/button2"
+        android:layout_toRightOf="@+id/button2"
+        android:layout_toEndOf="@+id/button2" />
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="\u2193"
+        android:id="@+id/button4"
+        android:layout_below="@+id/button3"
+        android:layout_alignRight="@+id/button2"
+        android:layout_alignEnd="@+id/button2" />
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="\u2192"
+        android:id="@+id/button5"
+        android:layout_marginRight="23dp"
+        android:layout_marginEnd="23dp"
+        android:layout_above="@+id/button4"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="\u2190"
+        android:id="@+id/button6"
+        android:layout_below="@+id/button7"
+        android:layout_toLeftOf="@+id/button7"
+        android:layout_toStartOf="@+id/button7" />
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="\u2191"
+        android:id="@+id/button7"
+        android:layout_above="@+id/button5"
+        android:layout_toLeftOf="@+id/button5"
+        android:layout_toStartOf="@+id/button5" />
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="\u2193"
+        android:id="@+id/button8"
+        android:layout_below="@+id/button6"
+        android:layout_alignLeft="@+id/button7"
+        android:layout_alignStart="@+id/button7" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="0"
+        android:id="@+id/textView"
+        android:layout_above="@+id/button2"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="75dp" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Use Virtual Joystick"
+        android:id="@+id/Go_to_activity_2"
+        android:onClick="GoToVirtualJoystick"
+        android:nestedScrollingEnabled="false"
+        android:layout_marginLeft="27dp"
+        android:layout_marginTop="27dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"/>
+
+</RelativeLayout>

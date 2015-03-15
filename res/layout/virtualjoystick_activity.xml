@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".VirtualJoystick"
+    android:clickable="false">
+    <view
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        class="com.example.larion.controller.DualJoystick"
+        android:id="@+id/view"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/textView2"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Use Buttons"
+        android:id="@+id/Go_to_activity_2"
+        android:onClick="GoToButtons"
+        android:nestedScrollingEnabled="false"
+        android:layout_marginLeft="27dp"
+        android:layout_marginTop="27dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Large Text"
+        android:id="@+id/textView2"
+        android:layout_marginLeft="34dp"
+        android:layout_marginStart="34dp"
+        android:layout_below="@+id/Go_to_activity_2"
+        android:layout_toRightOf="@+id/Go_to_activity_2"
+        android:layout_toEndOf="@+id/Go_to_activity_2" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Large Text"
+        android:id="@+id/textView3"
+        android:layout_marginLeft="68dp"
+        android:layout_marginStart="68dp"
+        android:layout_above="@+id/view"
+        android:layout_toRightOf="@+id/textView2"
+        android:layout_toEndOf="@+id/textView2" />
+</RelativeLayout>
