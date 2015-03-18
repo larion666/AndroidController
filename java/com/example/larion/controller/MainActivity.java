@@ -45,6 +45,11 @@ public class MainActivity extends ActionBarActivity {
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
     };
+    public void GoToGyroscope(View view){
+        Intent intent = new Intent(this, GyroscopeControl.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+    };
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

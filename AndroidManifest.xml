@@ -13,12 +13,18 @@
             android:screenOrientation="landscape" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
             android:name=".VirtualJoystick"
             android:label="VirtualJoystick"
+            android:screenOrientation="landscape" >
+        </activity>
+        <activity
+            android:name=".GyroscopeControl"
+            android:label="@string/title_activity_gyroscope_control"
             android:screenOrientation="landscape" >
         </activity>
     </application>

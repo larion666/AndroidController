@@ -111,4 +111,13 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"/>
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Use Gyroscope"
+        android:id="@+id/button9"
+        android:layout_alignBottom="@+id/Go_to_activity_2"
+        android:layout_centerHorizontal="true"
+        android:onClick="GoToGyroscope" />
+
 </RelativeLayout>
