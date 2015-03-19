@@ -8,7 +8,6 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 
 /**
  * Created by Larion on 10.03.2015.
@@ -20,6 +19,8 @@ public class Draw extends View implements OnReleaseListener {
     private Draw releaselistener;
     private float x;
     private float y;
+    private float tempX;
+    private float tempY;
     private float offsetX=0;
     private float offsetY=0;
     private float previousX;
@@ -53,7 +54,7 @@ public class Draw extends View implements OnReleaseListener {
         canvas.drawColor(Color.WHITE);
         canvas.drawCircle(circleBigX, circleBigY, circleBigRadius, p);
         p.setColor(Color.LTGRAY);
-        if(isInsideCircle()) {
+        if(isInsideCircle(x,y)) {
             canvas.drawCircle(x-offsetX, y+offsetY, circleRadius, p);
             previousX=x;
             previousY=y;
@@ -93,13 +94,24 @@ public class Draw extends View implements OnReleaseListener {
             }
             break;
             case MotionEvent.ACTION_MOVE:{
-                x=ev.getX();
-                y=ev.getY();
-                if (isInsideSmallCircle(x,y)) {
-                    if (isInsideCircle()) {
+                tempX =x=ev.getX();
+                tempY =y=ev.getY();
+                if (isInsideCircle(x, y)){
+                    if (isInsideSmallCircle(x,y)) {
                         awakeCoordinatesListener();
                         invalidate();
-                    }
+                        }
+                }else {
+                    offsetX=0;
+                    offsetY=0;
+                    x=circleBigX-(circleBigRadius*(float)Math.sin(getAngle(tempX, tempY)));
+                    //if(x<0){x = Math.abs(x);}else{x=-(x);}
+                    Log.i ("C",String.valueOf(tempX));
+                    y=circleBigY-(circleBigRadius*(float)Math.cos(getAngle(tempX, tempY)));
+                    //if(y<0){x = Math.abs(x);}else{y=-(y);}
+                    Log.i ("D",String.valueOf(tempY));
+                    awakeCoordinatesListener();
+                    invalidate();
                 }
             }
             break;
@@ -108,20 +120,22 @@ public class Draw extends View implements OnReleaseListener {
                 float b;
                 a=ev.getX();
                 b=ev.getY();
+                //Log.i ("C",String.valueOf(tempX));
+                //Log.i ("D",String.valueOf(tempY));
                 if (isInsideSmallCircle(a,b)) {
                     offsetX=a-centerX;
                     offsetY=centerY-b;
                     awakeCoordinatesListener();
-                    Log.i ("offsetX",String.valueOf(offsetX));
-                    Log.i ("offsetY",String.valueOf(offsetY));
+                    //Log.i ("offsetX",String.valueOf(offsetX));
+                    //Log.i ("offsetY",String.valueOf(offsetY));
                 }
             }
             break;
         }
         return true;
     }
-    public boolean isInsideCircle(){
-        return(Math.pow((x - circleBigX-offsetX),2) + Math.pow((y - circleBigY+offsetY),2) < Math.pow(circleBigRadius,2));
+    public boolean isInsideCircle(float pointX, float pointY){
+        return(Math.pow((pointX - circleBigX-offsetX),2) + Math.pow((pointY - circleBigY+offsetY),2) < Math.pow(circleBigRadius,2));
 
     }
     public boolean  isInsideSmallCircle(float pointX, float pointY){
@@ -168,5 +182,17 @@ public class Draw extends View implements OnReleaseListener {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         setMeasuredDimension(160, 160);
     }*/
-
+    public float getAngle(float pointX, float pointY){
+        float angleInDegrees;
+        float deltaX;
+        float deltaY;
+        deltaX=circleBigX-pointX;
+        deltaY=circleBigY-pointY;
+        angleInDegrees=(float)/*Math.toDegrees(*/Math.atan2(deltaX,deltaY);
+        /*if(angleInDegrees > 0){
+            angleInDegrees -= 360;
+        }*/
+        //angleInDegrees=Math.abs(angleInDegrees);
+        return angleInDegrees;
+    }
 }

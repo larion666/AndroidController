@@ -37,13 +37,13 @@ public class DualJoystick extends RelativeLayout {
     }
     public void init(){
         RelativeLayout layout = (RelativeLayout)findViewById(R.id.view);
-        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(360, 360);
-        RelativeLayout.LayoutParams params2 = new RelativeLayout.LayoutParams(360, 360);
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(400, 400);
+        RelativeLayout.LayoutParams params2 = new RelativeLayout.LayoutParams(400, 400);
         params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
         params2.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, RelativeLayout.TRUE);
         params2.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
-        leftJ.setParameters(180,180);
-        rightJ.setParameters(180,180);
+        leftJ.setParameters(200,200);
+        rightJ.setParameters(200,200);
         layout.removeView(leftJ);
         layout.removeView(rightJ);
         layout.addView(leftJ, params);
