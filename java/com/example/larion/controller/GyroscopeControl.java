@@ -4,25 +4,37 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.os.SystemClock;
+import android.os.Handler;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View.OnTouchListener;
+import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
+import java.util.Timer;
 
 
 public class GyroscopeControl extends ActionBarActivity {
-    SensorManager sensorManager;
-    Sensor sensorAccel;
-    TextView textView;
+
+    SeekBar throttlebar;
+    TextView pitchtext;
+    TextView rolltext;
+    TextView yawtext;
+    TextView throttletext;
+    Handler handler;
+    private Runnable runnable;
+    Thread thread;
+    static float pitch;
+    float roll;
+    float yaw;
+    float throttle;
     float[] r=new float[9];
     float[] valuesResult=new float[3];
     float[] valuesAccel=new float[3];
@@ -31,20 +43,61 @@ public class GyroscopeControl extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.gyroscope_control_activity);
-        textView = (TextView) findViewById(R.id.textView4);
+        pitchtext = (TextView) findViewById(R.id.pitch);
+        rolltext = (TextView) findViewById(R.id.roll);
+        yawtext = (TextView) findViewById(R.id.yaw);
+        throttletext = (TextView) findViewById(R.id.throttle);
+        throttlebar =(SeekBar) findViewById(R.id.throttleBar);
         Button startButton = (Button) findViewById(R.id.startButton);
         startButton.setOnTouchListener(new OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionevent) {
                 int action = motionevent.getAction();
                 switch (action & MotionEvent.ACTION_MASK){
-                    case MotionEvent.ACTION_MOVE:{
-                        getOrientation();
+                    case MotionEvent.ACTION_DOWN:{
+                        handler = new Handler();
+                        runnable = new Runnable() {
+                            @Override
+                            public void run() {
+                                getOrientation();
+                                handler.post(new Runnable(){
+                                    public void run() {
+                                        pitchtext.setText(Float.toString(pitch));
+                                        rolltext.setText(Float.toString(roll));
+                                        yawtext.setText(Float.toString(yaw));
+                                    }
+                                });
+                                //Log.i("Test","true");
+                                handler.postDelayed(this, 100);
+                            }
+                        };
+                        thread = new Thread(runnable);
+                        thread.start();
+                        //getOrientation(true);
+                    }
+                    case MotionEvent.ACTION_UP:{
+                        handler.removeCallbacks(runnable);
+                        Log.i("Stoped","True");
                     }
                 }
                 return false;
             }
-        }); //end b my button
+        });
+        throttlebar.setOnSeekBarChangeListener (new OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progresValue, boolean fromUser) {
+               throttle = progresValue;
+               throttletext.setText(Float.toString(throttle));
+            }
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar){
+
+            }
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar){
+
+            }
+        });
         //sensorAccel = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         //sensorManager.registerListener(listener, sensorAccel, SensorManager.SENSOR_DELAY_NORMAL);
     }
@@ -69,13 +122,19 @@ public class GyroscopeControl extends ActionBarActivity {
         sensorManager.unregisterListener(listener);
     }
     public void getOrientation(){
-        SensorManager.getRotationMatrix(r, null, valuesAccel, valuesMagnet);
-        SensorManager.getOrientation(r, valuesResult);
-        valuesResult[0] = (float) Math.toDegrees(valuesResult[0]);
-        valuesResult[1] = (float) Math.toDegrees(valuesResult[1]);
-        valuesResult[2] = (float) Math.toDegrees(valuesResult[2]);
-        textView.setText(Float.toString(valuesResult[0])+","+Float.toString(valuesResult[1])+","+Float.toString(valuesResult[2]));
-        Log.i("Changed","True");
+            //mTimer.schedule();
+            SensorManager.getRotationMatrix(r, null, valuesAccel, valuesMagnet);
+            SensorManager.getOrientation(r, valuesResult);
+            valuesResult[0] = (float) Math.toDegrees(valuesResult[0]);
+            valuesResult[1] = (float) Math.toDegrees(valuesResult[1]);
+            valuesResult[2] = (float) Math.toDegrees(valuesResult[2]);
+            pitch=valuesResult[0];
+            roll=valuesResult[1];
+            yaw=valuesResult[2];
+            //pitchtext.setText(Float.toString(pitch));
+            //rolltext.setText(Float.toString(roll));
+            //yawtext.setText(Float.toString(yaw));
+            Log.i("Changed","True");
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
