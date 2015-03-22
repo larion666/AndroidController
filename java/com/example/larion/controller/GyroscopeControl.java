@@ -31,10 +31,14 @@ public class GyroscopeControl extends ActionBarActivity {
     Handler handler;
     private Runnable runnable;
     Thread thread;
-    static float pitch;
+    float pitch;
     float roll;
     float yaw;
+    float pitchtemp=0;
+    float rolltemp=0;
+    float yawtemp=0;
     float throttle;
+    boolean isFirstRun;
     float[] r=new float[9];
     float[] valuesResult=new float[3];
     float[] valuesAccel=new float[3];
@@ -55,10 +59,16 @@ public class GyroscopeControl extends ActionBarActivity {
                 int action = motionevent.getAction();
                 switch (action & MotionEvent.ACTION_MASK){
                     case MotionEvent.ACTION_DOWN:{
+                        //boolean isFirstRun=true;
+                        isFirstRun=true;
                         handler = new Handler();
                         runnable = new Runnable() {
                             @Override
                             public void run() {
+                                if (isFirstRun){
+                                    getTempOrientation();
+                                }
+                                isFirstRun=false;
                                 getOrientation();
                                 handler.post(new Runnable(){
                                     public void run() {
@@ -85,8 +95,8 @@ public class GyroscopeControl extends ActionBarActivity {
         });
         throttlebar.setOnSeekBarChangeListener (new OnSeekBarChangeListener() {
             @Override
-            public void onProgressChanged(SeekBar seekBar, int progresValue, boolean fromUser) {
-               throttle = progresValue;
+            public void onProgressChanged(SeekBar seekBar, int progressValue, boolean fromUser) {
+               throttle = progressValue;
                throttletext.setText(Float.toString(throttle));
             }
             @Override
@@ -128,13 +138,24 @@ public class GyroscopeControl extends ActionBarActivity {
             valuesResult[0] = (float) Math.toDegrees(valuesResult[0]);
             valuesResult[1] = (float) Math.toDegrees(valuesResult[1]);
             valuesResult[2] = (float) Math.toDegrees(valuesResult[2]);
-            pitch=valuesResult[0];
-            roll=valuesResult[1];
-            yaw=valuesResult[2];
+            yaw = valuesResult[0]-yawtemp;
+            roll = valuesResult[1]-rolltemp;
+            pitch = valuesResult[2]-pitchtemp;
             //pitchtext.setText(Float.toString(pitch));
             //rolltext.setText(Float.toString(roll));
             //yawtext.setText(Float.toString(yaw));
-            Log.i("Changed","True");
+            //Log.i("Changed", "True");
+    }
+    public void getTempOrientation(){
+        SensorManager.getRotationMatrix(r, null, valuesAccel, valuesMagnet);
+        SensorManager.getOrientation(r, valuesResult);
+        valuesResult[0] = (float) Math.toDegrees(valuesResult[0]);
+        valuesResult[1] = (float) Math.toDegrees(valuesResult[1]);
+        valuesResult[2] = (float) Math.toDegrees(valuesResult[2]);
+        yawtemp = valuesResult[0];
+        rolltemp = valuesResult[1];
+        pitchtemp = valuesResult[2];
+        Log.i("pitchtemp", Float.toString(pitchtemp));
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
