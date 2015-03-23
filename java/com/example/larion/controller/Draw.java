@@ -21,6 +21,8 @@ public class Draw extends View implements OnReleaseListener {
     private float y;
     private float tempX;
     private float tempY;
+    private float a;
+    private float b;
     private float offsetX=0;
     private float offsetY=0;
     private float previousX;
@@ -31,6 +33,7 @@ public class Draw extends View implements OnReleaseListener {
     private float circleBigX;
     private float circleBigY;
     private int circleBigRadius=130;
+    private boolean autoReturnToCenter;
     private OnCoordinateChanged coordinatesChangedListener;
     private OnReleaseListener releaseListener;
     public Draw(Context context) {
@@ -55,11 +58,12 @@ public class Draw extends View implements OnReleaseListener {
         canvas.drawCircle(circleBigX, circleBigY, circleBigRadius, p);
         p.setColor(Color.LTGRAY);
         if(isInsideCircle(x,y)) {
-            canvas.drawCircle(x-offsetX, y+offsetY, circleRadius, p);
+            canvas.drawCircle(x, y, circleRadius, p);
             previousX=x;
             previousY=y;
         }else{
             canvas.drawCircle(previousX, previousY, circleRadius, p);
+            //canvas.drawCircle(previousX, previousY, circleRadius, p2);
         }
     }
     public void setOnCoordinateChangedListener(OnCoordinateChanged listener)
@@ -88,16 +92,21 @@ public class Draw extends View implements OnReleaseListener {
         final int action = ev.getAction();
         switch (action & MotionEvent.ACTION_MASK) {
             case MotionEvent.ACTION_UP:{
-                awakeOnReleaseListener();
-                offsetX=0;
-                offsetY=0;
+                if(autoReturnToCenter) {
+                    awakeOnReleaseListener();
+                }
+                offsetX = 0;
+                offsetY = 0;
+                invalidate();
             }
             break;
             case MotionEvent.ACTION_MOVE:{
-                tempX =x=ev.getX();
-                tempY =y=ev.getY();
-                if (isInsideCircle(x, y)){
-                    if (isInsideSmallCircle(x,y)) {
+                tempX=ev.getX();
+                tempY=ev.getY();
+                if (isInsideCircle(tempX, tempY)){
+                    if (isInsideSmallCircle(tempX, tempY)) {
+                        x=tempX-offsetX;
+                        y=tempY+offsetY;
                         awakeCoordinatesListener();
                         invalidate();
                         }
@@ -106,28 +115,29 @@ public class Draw extends View implements OnReleaseListener {
                     offsetY=0;
                     x=circleBigX-(circleBigRadius*(float)Math.sin(getAngle(tempX, tempY)));
                     //if(x<0){x = Math.abs(x);}else{x=-(x);}
-                    Log.i ("C",String.valueOf(tempX));
+                    //Log.i ("C",String.valueOf(tempX));
                     y=circleBigY-(circleBigRadius*(float)Math.cos(getAngle(tempX, tempY)));
                     //if(y<0){x = Math.abs(x);}else{y=-(y);}
-                    Log.i ("D",String.valueOf(tempY));
+                    //Log.i ("D",String.valueOf(tempY));
                     awakeCoordinatesListener();
                     invalidate();
                 }
             }
             break;
             case MotionEvent.ACTION_DOWN:{
-                float a;
-                float b;
                 a=ev.getX();
                 b=ev.getY();
                 //Log.i ("C",String.valueOf(tempX));
                 //Log.i ("D",String.valueOf(tempY));
-                if (isInsideSmallCircle(a,b)) {
-                    offsetX=a-centerX;
-                    offsetY=centerY-b;
-                    awakeCoordinatesListener();
-                    //Log.i ("offsetX",String.valueOf(offsetX));
-                    //Log.i ("offsetY",String.valueOf(offsetY));
+                if(isInsideCircle(a,b)) {
+                    if (isInsideSmallCircle(a, b)) {
+                        Log.i ("PressedDown","True");
+                        offsetX = a - previousX;
+                        offsetY = previousY - b;
+                        awakeCoordinatesListener();
+                        //Log.i ("offsetX",String.valueOf(offsetX));
+                        //Log.i ("offsetY",String.valueOf(offsetY));
+                    }
                 }
             }
             break;
@@ -142,22 +152,10 @@ public class Draw extends View implements OnReleaseListener {
         return(Math.pow((pointX - previousX),2) + Math.pow((pointY - previousY),2) < Math.pow(circleRadius,2));
     }
     public float getX(){
-        if(x - centerX==0) {
-            //Log.i ("Released",String.valueOf(width));
-            return Math.round(x - centerX);
-        }else {
-            return Math.round(x - centerX - offsetX);
-        }
+        return Math.round(x - centerX);
     }
     public float getY(){
-        if(centerY-y==0) {
-            //Log.i ("Released",String.valueOf(width));
-            return Math.round(centerY-y);
-        }else {
-            return Math.round(centerY-y-offsetY);
-        }
-        //Log.i ("Released",String.valueOf(height));
-
+        return Math.round(centerY-y);
     }
     public void onRelease(){
         Log.i ("Released","True");
@@ -173,9 +171,10 @@ public class Draw extends View implements OnReleaseListener {
         setMinimumHeight(100);
         setMinimumWidth(100);
     }
-    public void setParameters(float cX,float cY){
+    public void setParameters(float cX,float cY, boolean autoReturn){
         x=previousX=centerX=circleBigX=cX;
         y=previousY=centerY=circleBigY=cY;
+        autoReturnToCenter=autoReturn;
     }
     /*@Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
