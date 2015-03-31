@@ -54,7 +54,7 @@ public class Draw extends View implements OnReleaseListener {
     public void onDraw(Canvas canvas) {
         p.setColor(Color.GRAY);
         //Log.i ("Coordinates",String.valueOf(x));
-        canvas.drawColor(Color.WHITE);
+        //canvas.drawColor(Color.WHITE);
         canvas.drawCircle(circleBigX, circleBigY, circleBigRadius, p);
         p.setColor(Color.LTGRAY);
         if(isInsideCircle(x,y)) {

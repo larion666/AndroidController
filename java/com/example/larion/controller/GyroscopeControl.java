@@ -72,9 +72,9 @@ public class GyroscopeControl extends ActionBarActivity {
                                 getOrientation();
                                 handler.post(new Runnable(){
                                     public void run() {
-                                        pitchtext.setText(Float.toString(pitch));
-                                        rolltext.setText(Float.toString(roll));
-                                        yawtext.setText(Float.toString(yaw));
+                                        pitchtext.setText(Float.toString(Math.round(pitch)));
+                                        rolltext.setText(Float.toString(Math.round(roll)));
+                                        yawtext.setText(Float.toString(Math.round(yaw)));
                                     }
                                 });
                                 //Log.i("Test","true");

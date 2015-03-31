@@ -8,7 +8,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="\u2190"
-        android:id="@+id/button"
+        android:id="@+id/roll_right"
         android:layout_marginBottom="52dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
@@ -21,40 +21,40 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="\u2191"
-        android:id="@+id/button2"
-        android:layout_above="@+id/button"
-        android:layout_toRightOf="@+id/button"
-        android:layout_toEndOf="@+id/button" />
+        android:id="@+id/pitch_increase"
+        android:layout_above="@+id/roll_right"
+        android:layout_toRightOf="@+id/roll_right"
+        android:layout_toEndOf="@+id/roll_right" />
 
     <Button
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="\u2192"
-        android:id="@+id/button3"
-        android:layout_below="@+id/button2"
-        android:layout_toRightOf="@+id/button2"
-        android:layout_toEndOf="@+id/button2" />
+        android:id="@+id/roll_left"
+        android:layout_below="@+id/pitch_increase"
+        android:layout_toRightOf="@+id/pitch_increase"
+        android:layout_toEndOf="@+id/pitch_increase" />
 
     <Button
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="\u2193"
-        android:id="@+id/button4"
-        android:layout_below="@+id/button3"
-        android:layout_alignRight="@+id/button2"
-        android:layout_alignEnd="@+id/button2" />
+        android:id="@+id/pitch_decrease"
+        android:layout_below="@+id/roll_left"
+        android:layout_alignRight="@+id/pitch_increase"
+        android:layout_alignEnd="@+id/pitch_increase" />
 
     <Button
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="\u2192"
-        android:id="@+id/button5"
+        android:id="@+id/yaw_right"
         android:layout_marginRight="23dp"
         android:layout_marginEnd="23dp"
-        android:layout_above="@+id/button4"
+        android:layout_above="@+id/pitch_decrease"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
 
@@ -63,40 +63,40 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="\u2190"
-        android:id="@+id/button6"
-        android:layout_below="@+id/button7"
-        android:layout_toLeftOf="@+id/button7"
-        android:layout_toStartOf="@+id/button7" />
+        android:id="@+id/yaw_left"
+        android:layout_below="@+id/throttle_increase"
+        android:layout_toLeftOf="@+id/throttle_increase"
+        android:layout_toStartOf="@+id/throttle_increase" />
 
     <Button
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="\u2191"
-        android:id="@+id/button7"
-        android:layout_above="@+id/button5"
-        android:layout_toLeftOf="@+id/button5"
-        android:layout_toStartOf="@+id/button5" />
+        android:id="@+id/throttle_increase"
+        android:layout_above="@+id/yaw_right"
+        android:layout_toLeftOf="@+id/yaw_right"
+        android:layout_toStartOf="@+id/yaw_right" />
 
     <Button
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="\u2193"
-        android:id="@+id/button8"
-        android:layout_below="@+id/button6"
-        android:layout_alignLeft="@+id/button7"
-        android:layout_alignStart="@+id/button7" />
+        android:id="@+id/throttle_decrease"
+        android:layout_below="@+id/yaw_left"
+        android:layout_alignLeft="@+id/throttle_increase"
+        android:layout_alignStart="@+id/throttle_increase" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="0"
-        android:id="@+id/textView"
-        android:layout_above="@+id/button2"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="75dp" />
+        android:id="@+id/pitch_text"
+        android:layout_alignTop="@+id/textView14"
+        android:layout_toRightOf="@+id/use_gyroscope"
+        android:layout_toEndOf="@+id/use_gyroscope" />
 
     <Button
         android:layout_width="wrap_content"
@@ -115,9 +115,106 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Use Gyroscope"
-        android:id="@+id/button9"
+        android:id="@+id/use_gyroscope"
         android:layout_alignBottom="@+id/Go_to_activity_2"
         android:layout_centerHorizontal="true"
         android:onClick="GoToGyroscope" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Pitch"
+        android:id="@+id/textView14"
+        android:layout_centerVertical="true"
+        android:layout_alignLeft="@+id/use_gyroscope"
+        android:layout_alignStart="@+id/use_gyroscope" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Roll"
+        android:id="@+id/textView4"
+        android:layout_alignLeft="@+id/textView14"
+        android:layout_alignStart="@+id/textView14"
+        android:layout_below="@+id/textView14"
+        android:layout_marginTop="10dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Yaw"
+        android:id="@+id/textView6"
+        android:layout_below="@+id/textView4"
+        android:layout_alignLeft="@+id/textView4"
+        android:layout_alignStart="@+id/textView4"
+        android:layout_marginTop="10dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Throttle"
+        android:id="@+id/textView11"
+        android:layout_below="@+id/textView6"
+        android:layout_alignLeft="@+id/textView6"
+        android:layout_alignStart="@+id/textView6"
+        android:layout_marginTop="10dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="0"
+        android:id="@+id/yaw_text"
+        android:layout_alignTop="@+id/textView6"
+        android:layout_alignLeft="@+id/roll_text"
+        android:layout_alignStart="@+id/roll_text" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="0"
+        android:id="@+id/throttle_text"
+        android:layout_alignTop="@+id/textView11"
+        android:layout_alignLeft="@+id/yaw_text"
+        android:layout_alignStart="@+id/yaw_text" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="0"
+        android:id="@+id/roll_text"
+        android:layout_alignTop="@+id/textView4"
+        android:layout_alignLeft="@+id/pitch_text"
+        android:layout_alignStart="@+id/pitch_text" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Orientation:"
+        android:id="@+id/textView"
+        android:layout_above="@+id/textView14"
+        android:layout_alignLeft="@+id/textView14"
+        android:layout_alignStart="@+id/textView14"
+        android:layout_marginBottom="25dp" />
+    <ImageView
+        android:id="@+id/rectimage"
+        android:layout_height="150dp"
+        android:layout_width="180dp"
+        android:src="@drawable/rectangle"
+        android:layout_alignRight="@+id/textView"
+        android:layout_alignEnd="@+id/textView"
+        android:layout_alignTop="@+id/textView"
+        android:layout_marginTop="-10dp"
+        android:layout_alignBottom="@+id/textView11"
+        android:layout_marginBottom="-15dp"
+        android:layout_marginRight="-75dp"
+        android:layout_alignLeft="@+id/textView"
+        android:layout_marginLeft="-10dp"
+        android:visibility="visible">
+    </ImageView>
 
 </RelativeLayout>

@@ -2,42 +2,211 @@ package com.example.larion.controller;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
 
 public class MainActivity extends ActionBarActivity {
-    TextView myTextView;
-    Button button2;
-    Button button4;
+    TextView pitch_text;
+    TextView roll_text;
+    TextView yaw_text;
+    TextView throttle_text;
+    Button roll_right;
+    Button pitch_increase;
+    Button pitch_decrease;
+    Button roll_left;
+    Button yaw_right;
+    Button yaw_left;
+    Button throttle_increase;
+    Button throttle_decrease;
     Button Go_to_activity_2;
-    int counter = 0;
+    int pitch = 0;
+    int roll=0;
+    int yaw=0;
+    int throttle=0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        myTextView = (TextView) findViewById(R.id.textView);
-        button2 = (Button) findViewById(R.id.button2);
-        button4 = (Button) findViewById(R.id.button4);
+        pitch_text = (TextView) findViewById(R.id.pitch_text);
+        roll_text = (TextView) findViewById(R.id.roll_text);
+        yaw_text = (TextView) findViewById(R.id.yaw_text);
+        throttle_text = (TextView) findViewById(R.id.throttle_text);
+        pitch_increase = (Button) findViewById(R.id.pitch_increase);
+        pitch_decrease = (Button) findViewById(R.id.pitch_decrease);
+        roll_right = (Button) findViewById(R.id.roll_right);
+        roll_left = (Button) findViewById(R.id.roll_left);
+        yaw_right = (Button) findViewById(R.id.yaw_right);
+        yaw_left = (Button) findViewById(R.id.yaw_left);
+        throttle_increase = (Button) findViewById(R.id.throttle_increase);
+        throttle_decrease = (Button) findViewById(R.id.throttle_decrease);
+
         Go_to_activity_2 = (Button) findViewById(R.id.Go_to_activity_2);
-        View.OnClickListener oclBtn2 = new View.OnClickListener() {
-            public void onClick(View v) {
-                counter++;
-                myTextView.setText(String.valueOf(counter));
+        View.OnTouchListener pitch_increase_listener = new View.OnTouchListener() {
+            public boolean onTouch(View view, MotionEvent motionevent) {
+                int action = motionevent.getAction();
+                switch (action & MotionEvent.ACTION_MASK){
+                    case MotionEvent.ACTION_DOWN:{
+                        pitch=15;
+                        Log.i("pitch", Float.toString(pitch));
+                        pitch_text.setText(String.valueOf(pitch));
+                        break;
+                    }
+                    case MotionEvent.ACTION_UP:{
+                        pitch=0;
+                        Log.i("pitch", Float.toString(pitch));
+                        pitch_text.setText(String.valueOf(pitch));
+                        break;
+                    }
+                }
+                return false;
             }
         };
-        View.OnClickListener oclBtn4 = new View.OnClickListener() {
-            public void onClick(View v) {
-                counter--;
-                myTextView.setText(String.valueOf(counter));
+        View.OnTouchListener pitch_decrease_listener = new View.OnTouchListener() {
+            public boolean onTouch(View view, MotionEvent motionevent) {
+                int action = motionevent.getAction();
+                switch (action & MotionEvent.ACTION_MASK){
+                    case MotionEvent.ACTION_DOWN:{
+                        pitch=-15;
+                        pitch_text.setText(String.valueOf(pitch));
+                        break;
+                    }
+                    case MotionEvent.ACTION_UP:{
+                        pitch=0;
+                        pitch_text.setText(String.valueOf(pitch));
+                        break;
+                    }
+                }
+                pitch_text.setText(String.valueOf(pitch));
+                return false;
             }
         };
-        button2.setOnClickListener(oclBtn2);
-        button4.setOnClickListener(oclBtn4);
+        View.OnTouchListener roll_right_listener = new View.OnTouchListener() {
+            public boolean onTouch(View view, MotionEvent motionevent) {
+                int action = motionevent.getAction();
+                switch (action & MotionEvent.ACTION_MASK){
+                    case MotionEvent.ACTION_DOWN:{
+                        roll=15;
+                        roll_text.setText(String.valueOf(roll));
+                        break;
+                    }
+                    case MotionEvent.ACTION_UP:{
+                        roll=0;
+                        roll_text.setText(String.valueOf(roll));
+                        break;
+                    }
+                }
+                return false;
+            }
+        };
+        View.OnTouchListener roll_left_listener = new View.OnTouchListener() {
+            public boolean onTouch(View view, MotionEvent motionevent) {
+                int action = motionevent.getAction();
+                switch (action & MotionEvent.ACTION_MASK){
+                    case MotionEvent.ACTION_DOWN:{
+                        roll=-15;
+                        roll_text.setText(String.valueOf(roll));
+                        break;
+                    }
+                    case MotionEvent.ACTION_UP:{
+                        roll=0;
+                        roll_text.setText(String.valueOf(roll));
+                        break;
+                    }
+                }
+                pitch_text.setText(String.valueOf(pitch));
+                return false;
+            }
+        };
+        View.OnTouchListener yaw_right_listener = new View.OnTouchListener() {
+            public boolean onTouch(View view, MotionEvent motionevent) {
+                int action = motionevent.getAction();
+                switch (action & MotionEvent.ACTION_MASK){
+                    case MotionEvent.ACTION_DOWN:{
+                        yaw=15;
+                        yaw_text.setText(String.valueOf(yaw));
+                        break;
+                    }
+                    case MotionEvent.ACTION_UP:{
+                        yaw=0;
+                        yaw_text.setText(String.valueOf(yaw));
+                        break;
+                    }
+                }
+
+                return false;
+            }
+        };
+        View.OnTouchListener yaw_left_listener = new View.OnTouchListener() {
+            public boolean onTouch(View view, MotionEvent motionevent) {
+                int action = motionevent.getAction();
+                switch (action & MotionEvent.ACTION_MASK){
+                    case MotionEvent.ACTION_DOWN:{
+                        yaw=-15;
+                        yaw_text.setText(String.valueOf(yaw));
+                        break;
+                    }
+                    case MotionEvent.ACTION_UP:{
+                        yaw=0;
+                        yaw_text.setText(String.valueOf(yaw));
+                        break;
+                    }
+                }
+                pitch_text.setText(String.valueOf(pitch));
+                return false;
+            }
+        };
+        View.OnTouchListener throttle_increase_listener = new View.OnTouchListener() {
+            public boolean onTouch(View view, MotionEvent motionevent) {
+                int action = motionevent.getAction();
+                switch (action & MotionEvent.ACTION_MASK){
+                    case MotionEvent.ACTION_DOWN:{
+                        if(throttle+10<=100) {
+                            throttle += 10;
+                            throttle_text.setText(String.valueOf(throttle));
+                        }
+                    }
+                    case MotionEvent.ACTION_UP:{
+
+                    }
+                }
+
+                return false;
+            }
+        };
+        View.OnTouchListener throttle_decrease_listener = new View.OnTouchListener() {
+            public boolean onTouch(View view, MotionEvent motionevent) {
+                int action = motionevent.getAction();
+                switch (action & MotionEvent.ACTION_MASK){
+                    case MotionEvent.ACTION_DOWN:{
+                        if(throttle-10>=0) {
+                            throttle -= 10;
+                            throttle_text.setText(String.valueOf(throttle));
+                        }
+                    }
+                    case MotionEvent.ACTION_UP:{
+
+                    }
+                }
+                return false;
+            }
+        };
+        pitch_increase.setOnTouchListener(pitch_increase_listener);
+        pitch_decrease.setOnTouchListener(pitch_decrease_listener);
+        roll_right.setOnTouchListener(roll_right_listener);
+        roll_left.setOnTouchListener(roll_left_listener);
+        yaw_right.setOnTouchListener(yaw_right_listener);
+        yaw_left.setOnTouchListener(yaw_left_listener);
+        throttle_increase.setOnTouchListener(throttle_increase_listener);
+        throttle_decrease.setOnTouchListener(throttle_decrease_listener);
         //myTextView.setText(String.valueOf(counter));
     }
     public void GoToVirtualJoystick(View view){
