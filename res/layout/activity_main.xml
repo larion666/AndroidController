@@ -217,4 +217,15 @@
         android:visibility="visible">
     </ImageView>
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TestConnection"
+        android:id="@+id/button"
+        android:layout_below="@+id/use_gyroscope"
+        android:layout_alignRight="@+id/yaw_right"
+        android:layout_alignEnd="@+id/yaw_right"
+        android:onClick="testConnection"
+        android:nestedScrollingEnabled="false" />
+
 </RelativeLayout>

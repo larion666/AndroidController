@@ -12,6 +12,34 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpHost;
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.conn.ManagedClientConnection;
+import org.apache.http.conn.routing.HttpRoute;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.params.HttpParams;
+import org.apache.http.util.EntityUtils;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.SocketTimeoutException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class MainActivity extends ActionBarActivity {
     TextView pitch_text;
@@ -31,7 +59,9 @@ public class MainActivity extends ActionBarActivity {
     int roll=0;
     int yaw=0;
     int throttle=0;
-
+    HttpURLConnection connection;
+    Thread thread;
+    Runnable runnable;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,8 +78,25 @@ public class MainActivity extends ActionBarActivity {
         yaw_left = (Button) findViewById(R.id.yaw_left);
         throttle_increase = (Button) findViewById(R.id.throttle_increase);
         throttle_decrease = (Button) findViewById(R.id.throttle_decrease);
-
         Go_to_activity_2 = (Button) findViewById(R.id.Go_to_activity_2);
+        runnable= new Runnable(){
+            @Override
+            public void run() {
+                try{
+                    URI website = new URI("http://192.168.4.1:80/?1=5");
+                    HttpParams params = new BasicHttpParams();
+                    HttpConnectionParams.setSoTimeout(params, 10);
+                    HttpGet httpget = new HttpGet();
+                    httpget.setURI(website);
+                    HttpClient httpclient = new DefaultHttpClient(params);
+                    HttpResponse response = httpclient.execute(httpget);
+                } catch (Exception e) {
+
+                }
+        }};
+        //thread = new Thread(runnable);
+
+        //thread.start();
         View.OnTouchListener pitch_increase_listener = new View.OnTouchListener() {
             public boolean onTouch(View view, MotionEvent motionevent) {
                 int action = motionevent.getAction();
@@ -240,5 +287,9 @@ public class MainActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+    public void testConnection(View view){
+        thread = new Thread(runnable);
+        thread.start();
     }
 }
