@@ -55,13 +55,12 @@ public class MainActivity extends ActionBarActivity {
     Button throttle_increase;
     Button throttle_decrease;
     Button Go_to_activity_2;
-    int pitch = 0;
+    OnVariablesChanged variablesChangedListener;
+    SendDataToQuadcopter send;
+    int pitch=0;
     int roll=0;
     int yaw=0;
     int throttle=0;
-    HttpURLConnection connection;
-    Thread thread;
-    Runnable runnable;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,24 +78,8 @@ public class MainActivity extends ActionBarActivity {
         throttle_increase = (Button) findViewById(R.id.throttle_increase);
         throttle_decrease = (Button) findViewById(R.id.throttle_decrease);
         Go_to_activity_2 = (Button) findViewById(R.id.Go_to_activity_2);
-        runnable= new Runnable(){
-            @Override
-            public void run() {
-                try{
-                    URI website = new URI("http://192.168.4.1:80/?1=5");
-                    HttpParams params = new BasicHttpParams();
-                    HttpConnectionParams.setSoTimeout(params, 10);
-                    HttpGet httpget = new HttpGet();
-                    httpget.setURI(website);
-                    HttpClient httpclient = new DefaultHttpClient(params);
-                    HttpResponse response = httpclient.execute(httpget);
-                } catch (Exception e) {
-
-                }
-        }};
-        //thread = new Thread(runnable);
-
-        //thread.start();
+        variablesChangedListener= new SendDataToQuadcopter();
+        variablesChangedListener.setOnVariablesChangedListener(variablesChangedListener);
         View.OnTouchListener pitch_increase_listener = new View.OnTouchListener() {
             public boolean onTouch(View view, MotionEvent motionevent) {
                 int action = motionevent.getAction();
@@ -105,12 +88,14 @@ public class MainActivity extends ActionBarActivity {
                         pitch=15;
                         Log.i("pitch", Float.toString(pitch));
                         pitch_text.setText(String.valueOf(pitch));
+                        variablesChangedListener.awakeOnReleaseListener(pitch,roll,yaw,throttle);
                         break;
                     }
                     case MotionEvent.ACTION_UP:{
                         pitch=0;
                         Log.i("pitch", Float.toString(pitch));
                         pitch_text.setText(String.valueOf(pitch));
+                        variablesChangedListener.awakeOnReleaseListener(pitch,roll,yaw,throttle);
                         break;
                     }
                 }
@@ -124,11 +109,13 @@ public class MainActivity extends ActionBarActivity {
                     case MotionEvent.ACTION_DOWN:{
                         pitch=-15;
                         pitch_text.setText(String.valueOf(pitch));
+                        variablesChangedListener.awakeOnReleaseListener(pitch,roll,yaw,throttle);
                         break;
                     }
                     case MotionEvent.ACTION_UP:{
                         pitch=0;
                         pitch_text.setText(String.valueOf(pitch));
+                        variablesChangedListener.awakeOnReleaseListener(pitch,roll,yaw,throttle);
                         break;
                     }
                 }
@@ -143,11 +130,13 @@ public class MainActivity extends ActionBarActivity {
                     case MotionEvent.ACTION_DOWN:{
                         roll=15;
                         roll_text.setText(String.valueOf(roll));
+                        variablesChangedListener.awakeOnReleaseListener(pitch,roll,yaw,throttle);
                         break;
                     }
                     case MotionEvent.ACTION_UP:{
                         roll=0;
                         roll_text.setText(String.valueOf(roll));
+                        variablesChangedListener.awakeOnReleaseListener(pitch,roll,yaw,throttle);
                         break;
                     }
                 }
@@ -161,11 +150,13 @@ public class MainActivity extends ActionBarActivity {
                     case MotionEvent.ACTION_DOWN:{
                         roll=-15;
                         roll_text.setText(String.valueOf(roll));
+                        variablesChangedListener.awakeOnReleaseListener(pitch,roll,yaw,throttle);
                         break;
                     }
                     case MotionEvent.ACTION_UP:{
                         roll=0;
                         roll_text.setText(String.valueOf(roll));
+                        variablesChangedListener.awakeOnReleaseListener(pitch,roll,yaw,throttle);
                         break;
                     }
                 }
@@ -180,11 +171,13 @@ public class MainActivity extends ActionBarActivity {
                     case MotionEvent.ACTION_DOWN:{
                         yaw=15;
                         yaw_text.setText(String.valueOf(yaw));
+                        variablesChangedListener.awakeOnReleaseListener(pitch,roll,yaw,throttle);
                         break;
                     }
                     case MotionEvent.ACTION_UP:{
                         yaw=0;
                         yaw_text.setText(String.valueOf(yaw));
+                        variablesChangedListener.awakeOnReleaseListener(pitch,roll,yaw,throttle);
                         break;
                     }
                 }
@@ -199,11 +192,13 @@ public class MainActivity extends ActionBarActivity {
                     case MotionEvent.ACTION_DOWN:{
                         yaw=-15;
                         yaw_text.setText(String.valueOf(yaw));
+                        variablesChangedListener.awakeOnReleaseListener(pitch,roll,yaw,throttle);
                         break;
                     }
                     case MotionEvent.ACTION_UP:{
                         yaw=0;
                         yaw_text.setText(String.valueOf(yaw));
+                        variablesChangedListener.awakeOnReleaseListener(pitch,roll,yaw,throttle);
                         break;
                     }
                 }
@@ -219,6 +214,7 @@ public class MainActivity extends ActionBarActivity {
                         if(throttle+10<=100) {
                             throttle += 10;
                             throttle_text.setText(String.valueOf(throttle));
+                            variablesChangedListener.awakeOnReleaseListener(pitch,roll,yaw,throttle);
                         }
                     }
                     case MotionEvent.ACTION_UP:{
@@ -237,6 +233,7 @@ public class MainActivity extends ActionBarActivity {
                         if(throttle-10>=0) {
                             throttle -= 10;
                             throttle_text.setText(String.valueOf(throttle));
+                            variablesChangedListener.awakeOnReleaseListener(pitch,roll,yaw,throttle);
                         }
                     }
                     case MotionEvent.ACTION_UP:{
@@ -288,8 +285,5 @@ public class MainActivity extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
-    public void testConnection(View view){
-        thread = new Thread(runnable);
-        thread.start();
-    }
+
 }
