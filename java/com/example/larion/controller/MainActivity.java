@@ -56,7 +56,6 @@ public class MainActivity extends ActionBarActivity {
     Button throttle_decrease;
     Button Go_to_activity_2;
     OnVariablesChanged variablesChangedListener;
-    SendDataToQuadcopter send;
     int pitch=0;
     int roll=0;
     int yaw=0;

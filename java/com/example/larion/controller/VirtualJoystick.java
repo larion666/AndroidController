@@ -19,12 +19,19 @@ import android.widget.TextView;
 public class VirtualJoystick extends ActionBarActivity {
     TextView text1, text2;
     DualJoystick joystick;
+    OnVariablesChanged variablesChangedListener;
+    int pitch=0;
+    int roll=0;
+    int yaw=0;
+    int throttle=0;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.virtualjoystick_activity);
         joystick = (DualJoystick)findViewById(R.id.view);
         joystick.setOnCoordinateChangedListener(_listenerLeft, _listenerRight);
+        variablesChangedListener= new SendDataToQuadcopter();
+        variablesChangedListener.setOnVariablesChangedListener(variablesChangedListener);
         //view.setOnCoordinateChangedListener(this);
         //view2 = new Draw(context);
         //view2.setOnCoordinateChangedListener(this);
@@ -59,7 +66,11 @@ public class VirtualJoystick extends ActionBarActivity {
         @Override
         public void onChange(float x, float y) {
             final TextView text1 = (TextView) findViewById(R.id.textView2);
+            pitch=Math.round(x);
+            roll=Math.round(y);
+            variablesChangedListener.awakeOnReleaseListener(pitch,roll,yaw,throttle);
             text1.setText(Float.toString(Math.round(x))+" "+Float.toString(Math.round(y)));
+
         }
     };
     private OnCoordinateChanged _listenerRight = new OnCoordinateChanged() {

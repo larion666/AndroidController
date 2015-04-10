@@ -19,8 +19,13 @@ import org.apache.http.params.HttpParams;
 import org.apache.http.util.EntityUtils;
 
 import java.io.IOException;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
 import java.net.HttpURLConnection;
+import java.net.InetAddress;
+import java.net.SocketException;
 import java.net.URI;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,6 +42,8 @@ public class SendDataToQuadcopter implements OnVariablesChanged {
             float roll;
             float yaw;
             float throttle;
+            DatagramSocket ds = null;
+
             SendVariables(float p,float r,float y,float t) {
                 pitch = p;
                 roll= r;
@@ -44,8 +51,40 @@ public class SendDataToQuadcopter implements OnVariablesChanged {
                 throttle=t;
             }
                 public void run() {
-                    try{
-                        URI website = new URI("http://192.168.4.1:80/?pitch="+pitch+"&roll="+roll+"&yaw="+yaw+"&throttle="+throttle);
+                    try {
+                        String udpMsg = "pitch "+pitch+",roll "+roll+",yaw "+yaw+",throttle "+throttle;
+                        ds = new DatagramSocket(1562);
+
+                        InetAddress serverAddr = InetAddress.getByName("192.168.4.1");
+
+                        DatagramPacket dp;
+
+                        dp = new DatagramPacket(udpMsg.getBytes(), udpMsg.length(), serverAddr, 1562);
+
+                        ds.send(dp);
+                        ds.close();
+
+                    } catch (SocketException e) {
+
+                        e.printStackTrace();
+
+                    }catch (UnknownHostException e) {
+
+                        e.printStackTrace();
+
+                    } catch (IOException e) {
+
+                        e.printStackTrace();
+
+                    } catch (Exception e) {
+
+                        e.printStackTrace();
+
+                    } finally {
+
+                    }
+                    /*try{
+                        URI website = new URI("http://192.168.4.1:80/?!pitch="+pitch+"&roll="+roll+"&yaw="+yaw+"&throttle="+throttle+"#");
                         HttpParams params = new BasicHttpParams();
                         HttpConnectionParams.setSoTimeout(params, 10);
                         HttpGet httpget = new HttpGet();
@@ -53,7 +92,7 @@ public class SendDataToQuadcopter implements OnVariablesChanged {
                         HttpClient httpclient = new DefaultHttpClient(params);
                         HttpResponse response = httpclient.execute(httpget);
                         Log.i("Sended", "True");
-                    } catch (Exception e) {e.printStackTrace();}
+                    } catch (Exception e) {e.printStackTrace();}*/
                 }
             }
         Thread thread = new Thread(new SendVariables(pitch,roll,yaw,throttle));
