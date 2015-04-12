@@ -127,7 +127,7 @@ public class MainActivity extends ActionBarActivity {
                 int action = motionevent.getAction();
                 switch (action & MotionEvent.ACTION_MASK){
                     case MotionEvent.ACTION_DOWN:{
-                        roll=15;
+                        roll=-15;
                         roll_text.setText(String.valueOf(roll));
                         variablesChangedListener.awakeOnReleaseListener(pitch,roll,yaw,throttle);
                         break;
@@ -147,7 +147,7 @@ public class MainActivity extends ActionBarActivity {
                 int action = motionevent.getAction();
                 switch (action & MotionEvent.ACTION_MASK){
                     case MotionEvent.ACTION_DOWN:{
-                        roll=-15;
+                        roll=15;
                         roll_text.setText(String.valueOf(roll));
                         variablesChangedListener.awakeOnReleaseListener(pitch,roll,yaw,throttle);
                         break;
