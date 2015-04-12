@@ -20,6 +20,8 @@ public class VirtualJoystick extends ActionBarActivity {
     TextView text1, text2;
     DualJoystick joystick;
     OnVariablesChanged variablesChangedListener;
+    int pitchTemp=0;
+    int rollTemp=0;
     int pitch=0;
     int roll=0;
     int yaw=0;
@@ -66,11 +68,17 @@ public class VirtualJoystick extends ActionBarActivity {
         @Override
         public void onChange(float x, float y) {
             final TextView text1 = (TextView) findViewById(R.id.textView2);
-            pitch=Math.round(x);
-            roll=Math.round(y);
-            variablesChangedListener.awakeOnReleaseListener(pitch,roll,yaw,throttle);
-            text1.setText(Float.toString(Math.round(x))+" "+Float.toString(Math.round(y)));
+            pitch=roundVariableIfPositive(Math.round(x));
+            roll=roundVariableIfPositive(Math.round(y));
+            if(pitch!=pitchTemp||roll!=rollTemp){
+                variablesChangedListener.awakeOnReleaseListener(pitch,roll,yaw,throttle);
+                Log.i("Pitch value",String.valueOf(pitch));
+                Log.i("Roll value",String.valueOf(roll));
+            }
 
+            text1.setText(Float.toString(Math.round(x))+" "+Float.toString(Math.round(y)));
+            pitchTemp=pitch;
+            rollTemp=roll;
         }
     };
     private OnCoordinateChanged _listenerRight = new OnCoordinateChanged() {
@@ -80,4 +88,7 @@ public class VirtualJoystick extends ActionBarActivity {
             text2.setText(Float.toString(Math.round(x))+" "+Float.toString(Math.round(y)));
         }
     };
+    public int roundVariableIfPositive(float var){
+        return (int)(var - 0) * (15 - 0) / (130 - 0) + 0;
+    }
 }

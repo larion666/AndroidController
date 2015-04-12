@@ -52,7 +52,7 @@ public class SendDataToQuadcopter implements OnVariablesChanged {
             }
                 public void run() {
                     try {
-                        String udpMsg = "pitch "+pitch+",roll "+roll+",yaw "+yaw+",throttle "+throttle;
+                        String udpMsg = String.valueOf(pitch+","+roll+","+yaw+","+throttle);
                         ds = new DatagramSocket(1562);
 
                         InetAddress serverAddr = InetAddress.getByName("192.168.4.1");
@@ -63,6 +63,7 @@ public class SendDataToQuadcopter implements OnVariablesChanged {
 
                         ds.send(dp);
                         ds.close();
+
 
                     } catch (SocketException e) {
 
