@@ -56,9 +56,9 @@ public class MainActivity extends ActionBarActivity {
     Button throttle_decrease;
     Button Go_to_activity_2;
     OnVariablesChanged variablesChangedListener;
-    int pitch=0;
-    int roll=0;
-    int yaw=0;
+    float pitch=0;
+    float roll=0;
+    float yaw=0;
     int throttle=0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
