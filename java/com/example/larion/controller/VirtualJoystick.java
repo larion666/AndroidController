@@ -26,6 +26,10 @@ public class VirtualJoystick extends ActionBarActivity {
     int roll=0;
     int yaw=0;
     int throttle=0;
+    int isArm=1;
+    float pid_P_Coef=1.04f;
+    float pid_I_Coef=0.002f;
+    float  pid_D_Coef=0.35f;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,7 +75,7 @@ public class VirtualJoystick extends ActionBarActivity {
             pitch=roundVariableIfPositive(Math.round(x));
             roll=roundVariableIfPositive(Math.round(y));
             if(pitch!=pitchTemp||roll!=rollTemp){
-                variablesChangedListener.awakeOnReleaseListener(pitch,roll,yaw,throttle);
+                variablesChangedListener.awakeOnReleaseListener(pitch,roll,yaw,throttle,isArm,pid_P_Coef,pid_I_Coef,pid_D_Coef);
                 Log.i("Pitch value",String.valueOf(pitch));
                 Log.i("Roll value",String.valueOf(roll));
             }
@@ -89,6 +93,6 @@ public class VirtualJoystick extends ActionBarActivity {
         }
     };
     public int roundVariableIfPositive(float var){
-        return (int)(var - 0) * (15 - 0) / (130 - 0) + 0;
+        return (int)(var - 0) * (15) / (130);
     }
 }

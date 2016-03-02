@@ -217,4 +217,23 @@
         android:visibility="visible">
     </ImageView>
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Emergency stop"
+        android:id="@+id/button"
+        android:layout_alignBottom="@+id/use_gyroscope"
+        android:layout_alignLeft="@+id/yaw_left"
+        android:layout_alignStart="@+id/yaw_left"
+        android:onClick="EmergencyStop" />
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Change PID Coefficients"
+        android:id="@+id/checkBox"
+        android:layout_alignTop="@+id/rectimage"
+        android:layout_alignLeft="@+id/Go_to_activity_2"
+        android:layout_alignStart="@+id/Go_to_activity_2" />
+
 </RelativeLayout>

@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import org.apache.http.HttpEntity;
@@ -56,10 +57,15 @@ public class MainActivity extends ActionBarActivity {
     Button throttle_decrease;
     Button Go_to_activity_2;
     OnVariablesChanged variablesChangedListener;
+    CheckBox checkBox;
     float pitch=0;
     float roll=0;
     float yaw=0;
     int throttle=0;
+    int isArm=0;
+    float pid_P_Coef=1.04f;
+    float pid_I_Coef=0.002f;
+    float  pid_D_Coef=0.35f;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,6 +83,7 @@ public class MainActivity extends ActionBarActivity {
         throttle_increase = (Button) findViewById(R.id.throttle_increase);
         throttle_decrease = (Button) findViewById(R.id.throttle_decrease);
         Go_to_activity_2 = (Button) findViewById(R.id.Go_to_activity_2);
+        checkBox= (CheckBox) findViewById(R.id.checkBox);
         variablesChangedListener= new SendDataToQuadcopter();
         variablesChangedListener.setOnVariablesChangedListener(variablesChangedListener);
         View.OnTouchListener pitch_increase_listener = new View.OnTouchListener() {
@@ -84,17 +91,29 @@ public class MainActivity extends ActionBarActivity {
                 int action = motionevent.getAction();
                 switch (action & MotionEvent.ACTION_MASK){
                     case MotionEvent.ACTION_DOWN:{
-                        pitch=15;
+                        if (checkBox.isChecked())
+                        {
+                            pid_P_Coef+=0.01f;
+                        }
+                        else{
+                            pitch=5;
+                        }
                         Log.i("pitch", Float.toString(pitch));
                         pitch_text.setText(String.valueOf(pitch));
-                        variablesChangedListener.awakeOnReleaseListener(pitch,roll,yaw,throttle);
+                        variablesChangedListener.awakeOnReleaseListener(pitch,roll,yaw,throttle,isArm,pid_P_Coef,pid_I_Coef,pid_D_Coef);
                         break;
                     }
                     case MotionEvent.ACTION_UP:{
-                        pitch=0;
+                        if (checkBox.isChecked())
+                        {
+                            pid_P_Coef+=0;
+                        }
+                        else{
+                            pitch=0;
+                        }
                         Log.i("pitch", Float.toString(pitch));
                         pitch_text.setText(String.valueOf(pitch));
-                        variablesChangedListener.awakeOnReleaseListener(pitch,roll,yaw,throttle);
+                        variablesChangedListener.awakeOnReleaseListener(pitch,roll,yaw,throttle,isArm,pid_P_Coef,pid_I_Coef,pid_D_Coef);
                         break;
                     }
                 }
@@ -106,15 +125,21 @@ public class MainActivity extends ActionBarActivity {
                 int action = motionevent.getAction();
                 switch (action & MotionEvent.ACTION_MASK){
                     case MotionEvent.ACTION_DOWN:{
-                        pitch=-15;
+                        if (checkBox.isChecked())
+                        {
+                            pid_P_Coef-=0.01f;
+                        }
+                        else{
+                            pitch=-5;
+                        }
                         pitch_text.setText(String.valueOf(pitch));
-                        variablesChangedListener.awakeOnReleaseListener(pitch,roll,yaw,throttle);
+                        variablesChangedListener.awakeOnReleaseListener(pitch,roll,yaw,throttle,isArm,pid_P_Coef,pid_I_Coef,pid_D_Coef);
                         break;
                     }
                     case MotionEvent.ACTION_UP:{
                         pitch=0;
                         pitch_text.setText(String.valueOf(pitch));
-                        variablesChangedListener.awakeOnReleaseListener(pitch,roll,yaw,throttle);
+                        variablesChangedListener.awakeOnReleaseListener(pitch,roll,yaw,throttle,isArm,pid_P_Coef,pid_I_Coef,pid_D_Coef);
                         break;
                     }
                 }
@@ -127,15 +152,27 @@ public class MainActivity extends ActionBarActivity {
                 int action = motionevent.getAction();
                 switch (action & MotionEvent.ACTION_MASK){
                     case MotionEvent.ACTION_DOWN:{
-                        roll=-15;
+                        if (checkBox.isChecked())
+                        {
+                            pid_I_Coef-=0.001f;
+                        }
+                        else{
+                            roll=-5;
+                        }
                         roll_text.setText(String.valueOf(roll));
-                        variablesChangedListener.awakeOnReleaseListener(pitch,roll,yaw,throttle);
+                        variablesChangedListener.awakeOnReleaseListener(pitch,roll,yaw,throttle,isArm,pid_P_Coef,pid_I_Coef,pid_D_Coef);
                         break;
                     }
                     case MotionEvent.ACTION_UP:{
-                        roll=0;
+                        if (checkBox.isChecked())
+                        {
+                            pid_I_Coef-=0;
+                        }
+                        else{
+                            roll=0;
+                        }
                         roll_text.setText(String.valueOf(roll));
-                        variablesChangedListener.awakeOnReleaseListener(pitch,roll,yaw,throttle);
+                        variablesChangedListener.awakeOnReleaseListener(pitch,roll,yaw,throttle,isArm,pid_P_Coef,pid_I_Coef,pid_D_Coef);
                         break;
                     }
                 }
@@ -147,15 +184,27 @@ public class MainActivity extends ActionBarActivity {
                 int action = motionevent.getAction();
                 switch (action & MotionEvent.ACTION_MASK){
                     case MotionEvent.ACTION_DOWN:{
-                        roll=15;
+                        if (checkBox.isChecked())
+                        {
+                            pid_I_Coef+=0.001f;
+                        }
+                        else{
+                            roll=5;
+                        }
                         roll_text.setText(String.valueOf(roll));
-                        variablesChangedListener.awakeOnReleaseListener(pitch,roll,yaw,throttle);
+                        variablesChangedListener.awakeOnReleaseListener(pitch,roll,yaw,throttle,isArm,pid_P_Coef,pid_I_Coef,pid_D_Coef);
                         break;
                     }
                     case MotionEvent.ACTION_UP:{
-                        roll=0;
+                        if (checkBox.isChecked())
+                        {
+                            pid_I_Coef+=0;
+                        }
+                        else{
+                            roll=0;
+                        }
                         roll_text.setText(String.valueOf(roll));
-                        variablesChangedListener.awakeOnReleaseListener(pitch,roll,yaw,throttle);
+                        variablesChangedListener.awakeOnReleaseListener(pitch,roll,yaw,throttle,isArm,pid_P_Coef,pid_I_Coef,pid_D_Coef);
                         break;
                     }
                 }
@@ -168,15 +217,27 @@ public class MainActivity extends ActionBarActivity {
                 int action = motionevent.getAction();
                 switch (action & MotionEvent.ACTION_MASK){
                     case MotionEvent.ACTION_DOWN:{
-                        yaw=15;
+                        if (checkBox.isChecked())
+                        {
+                            pid_D_Coef+=0.01f;
+                        }
+                        else{
+                            yaw=5;
+                        }
                         yaw_text.setText(String.valueOf(yaw));
-                        variablesChangedListener.awakeOnReleaseListener(pitch,roll,yaw,throttle);
+                        variablesChangedListener.awakeOnReleaseListener(pitch,roll,yaw,throttle,isArm,pid_P_Coef,pid_I_Coef,pid_D_Coef);
                         break;
                     }
                     case MotionEvent.ACTION_UP:{
-                        yaw=0;
+                        if (checkBox.isChecked())
+                        {
+                            pid_D_Coef+=0;
+                        }
+                        else{
+                            yaw=0;
+                        }
                         yaw_text.setText(String.valueOf(yaw));
-                        variablesChangedListener.awakeOnReleaseListener(pitch,roll,yaw,throttle);
+                        variablesChangedListener.awakeOnReleaseListener(pitch,roll,yaw,throttle,isArm,pid_P_Coef,pid_I_Coef,pid_D_Coef);
                         break;
                     }
                 }
@@ -189,15 +250,27 @@ public class MainActivity extends ActionBarActivity {
                 int action = motionevent.getAction();
                 switch (action & MotionEvent.ACTION_MASK){
                     case MotionEvent.ACTION_DOWN:{
-                        yaw=-15;
+                        if (checkBox.isChecked())
+                        {
+                            pid_D_Coef-=0.01f;
+                        }
+                        else{
+                            yaw=-5;
+                        }
                         yaw_text.setText(String.valueOf(yaw));
-                        variablesChangedListener.awakeOnReleaseListener(pitch,roll,yaw,throttle);
+                        variablesChangedListener.awakeOnReleaseListener(pitch,roll,yaw,throttle,isArm,pid_P_Coef,pid_I_Coef,pid_D_Coef);
                         break;
                     }
                     case MotionEvent.ACTION_UP:{
-                        yaw=0;
+                        if (checkBox.isChecked())
+                        {
+                            pid_D_Coef+=0;
+                        }
+                        else{
+                            yaw=0;
+                        }
                         yaw_text.setText(String.valueOf(yaw));
-                        variablesChangedListener.awakeOnReleaseListener(pitch,roll,yaw,throttle);
+                        variablesChangedListener.awakeOnReleaseListener(pitch,roll,yaw,throttle,isArm,pid_P_Coef,pid_I_Coef,pid_D_Coef);
                         break;
                     }
                 }
@@ -210,10 +283,17 @@ public class MainActivity extends ActionBarActivity {
                 int action = motionevent.getAction();
                 switch (action & MotionEvent.ACTION_MASK){
                     case MotionEvent.ACTION_DOWN:{
-                        if(throttle+10<=100) {
-                            throttle += 10;
+                        if(throttle+5<=100) {
+                            if(throttle>55)
+                            {
+                                throttle+=1;
+                            }
+                            else
+                            {
+                                throttle+=5;
+                            }
                             throttle_text.setText(String.valueOf(throttle));
-                            variablesChangedListener.awakeOnReleaseListener(pitch,roll,yaw,throttle);
+                            variablesChangedListener.awakeOnReleaseListener(pitch,roll,yaw,throttle,isArm,pid_P_Coef,pid_I_Coef,pid_D_Coef);
                         }
                     }
                     case MotionEvent.ACTION_UP:{
@@ -229,10 +309,17 @@ public class MainActivity extends ActionBarActivity {
                 int action = motionevent.getAction();
                 switch (action & MotionEvent.ACTION_MASK){
                     case MotionEvent.ACTION_DOWN:{
-                        if(throttle-10>=0) {
-                            throttle -= 10;
+                        if(throttle-5>=0) {
+                            if(throttle>55)
+                            {
+                                throttle-=1;
+                            }
+                            else
+                            {
+                                throttle-=5;
+                            }
                             throttle_text.setText(String.valueOf(throttle));
-                            variablesChangedListener.awakeOnReleaseListener(pitch,roll,yaw,throttle);
+                            variablesChangedListener.awakeOnReleaseListener(pitch,roll,yaw,throttle,isArm,pid_P_Coef,pid_I_Coef,pid_D_Coef);
                         }
                     }
                     case MotionEvent.ACTION_UP:{
@@ -261,6 +348,10 @@ public class MainActivity extends ActionBarActivity {
         Intent intent = new Intent(this, GyroscopeControl.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
+    };
+    public void EmergencyStop(View view){
+        isArm=1;
+        variablesChangedListener.awakeOnReleaseListener(pitch,roll,yaw,throttle,isArm,pid_P_Coef,pid_I_Coef,pid_D_Coef);
     };
 
     @Override

@@ -36,25 +36,33 @@ import java.util.List;
 public class SendDataToQuadcopter implements OnVariablesChanged {
     private OnVariablesChanged variablesChangedListener;
     @Override
-    public void onChange(float pitch, float roll,float yaw, float throttle) {
+    public void onChange(float pitch, float roll,float yaw, float throttle, int isArm,float pid_P_Coef,float pid_I_Coef,float pid_D_Coef) {
         class SendVariables implements Runnable {
             float pitch;
             float roll;
             float yaw;
             float throttle;
+            int isArm;
+            float pid_P_Coef;
+            float pid_I_Coef;
+            float pid_D_Coef;
             DatagramSocket ds = null;
 
-            SendVariables(float p,float r,float y,float t) {
+            SendVariables(float p,float r,float y,float t, int a,float p_coef,float i_coef,float d_coef) {
                 pitch = p;
                 roll= r;
                 yaw=y;
                 throttle=t;
+                isArm= a;
+                pid_P_Coef=p_coef;
+                pid_I_Coef=i_coef;
+                pid_D_Coef=d_coef;
             }
                 public void run() {
                     try {
-                        String udpMsg = String.valueOf(pitch+","+roll+","+yaw+","+throttle);
+                        String udpMsg = String.valueOf(pitch+","+roll+","+yaw+","+throttle+","+isArm+","+pid_P_Coef+","+pid_I_Coef+","+pid_D_Coef);
                         ds = new DatagramSocket(1562);
-
+                        Log.i("isArmed",udpMsg);
                         InetAddress serverAddr = InetAddress.getByName("192.168.4.1");
 
                         DatagramPacket dp;
@@ -96,7 +104,7 @@ public class SendDataToQuadcopter implements OnVariablesChanged {
                     } catch (Exception e) {e.printStackTrace();}*/
                 }
             }
-        Thread thread = new Thread(new SendVariables(pitch,roll,yaw,throttle));
+        Thread thread = new Thread(new SendVariables(pitch,roll,yaw,throttle,isArm,pid_P_Coef,pid_I_Coef,pid_D_Coef));
         thread.start();
     }
     @Override
@@ -104,12 +112,12 @@ public class SendDataToQuadcopter implements OnVariablesChanged {
         this.variablesChangedListener=listener;
     }
     @Override
-    public void awakeOnReleaseListener(float pitch,float roll,float yaw,float throttle)
+    public void awakeOnReleaseListener(float pitch,float roll,float yaw,float throttle, int isArm,float pid_P_Coef,float pid_I_Coef,float pid_D_Coef)
     {
         Log.i("Awaked", "True");
         if(variablesChangedListener != null)
         {
-            variablesChangedListener.onChange(pitch,roll,yaw,throttle);
+            variablesChangedListener.onChange(pitch,roll,yaw,throttle,isArm,pid_P_Coef,pid_I_Coef,pid_D_Coef);
         }
     }
 }
